@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Tic Tac Toe</title>
+        <style>
+            #gameAlert {
+                position: absolute;
+                top: 75px;
+                left: 300px;
+                width: 300px;
+                text-align: center;
+                font-size: 64px;
+            }
+            
+            td {
+                width: 100px;
+                height: 100px;
+                border: 3px solid black;
+            }
+
+            #ticTacToeTable {
+                position: absolute;
+                top: 200px;
+                left: 300px;
+                border-collapse: collapse;
+            }
+
+            .ticTacToeBox {
+                font-size: 48px;
+                text-align: center;
+            }
+        </style>
+
+
+
+    </head>
+    <body>
+
+        <h1 id="gameAlert"></h1>
+        <table id="ticTacToeTable">
+            <tbody>
+                <tr>
+                    <td class="ticTacToeBox"></td>
+                    <td class="ticTacToeBox"></td>
+                    <td class="ticTacToeBox"></td>
+                </tr>
+                <tr>
+                    <td class="ticTacToeBox"></td>
+                    <td class="ticTacToeBox"></td>
+                    <td class="ticTacToeBox"></td>
+                </tr>
+                <tr>
+                    <td class="ticTacToeBox"></td>
+                    <td class="ticTacToeBox"></td>
+                    <td class="ticTacToeBox"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script>
+            let gameBox = document.getElementById("ticTacToeTable");
+            let boxList = document.getElementsByClassName("ticTacToeBox");
+            let gameAlert = document.getElementById("gameAlert");
+            let ticTacToeBox = [[null, null, null], [null, null, null], [null, null, null]];
+            let ticTacToeArr = [[undefined, undefined, undefined], [undefined, undefined, undefined], [undefined, undefined, undefined]];
+            let positionsPlaced = 0;
+            let gameOver = false;
+
+            let endGame = function () {   
+                for (let i = 0; i < 2; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        if (
+                            ((ticTacToeArr[j][0] == i) && (ticTacToeArr[j][1] == i) && (ticTacToeArr[j][2] == i)) ||
+                            ((ticTacToeArr[0][j] == i) && (ticTacToeArr[1][j] == i) && (ticTacToeArr[2][j] == i)) ||
+                            ((ticTacToeArr[0][0] == i) && (ticTacToeArr[1][1] == i) && (ticTacToeArr[2][2] == i)) ||
+                            ((ticTacToeArr[0][2] == i) && (ticTacToeArr[1][1] == i) && (ticTacToeArr[2][0] == i))
+                        ) {
+                            if (i == 0) {
+                                gameAlert.innerHTML = "O Wins!";
+                            } else {
+                                gameAlert.innerHTML = "X Wins!";
+                            }
+                            gameOver = true;
+                        }
+                    }
+                }
+            }
+
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    ticTacToeBox[i][j] = boxList[3*i + j];
+                    
+                    let addPosition = function() {
+                        if (positionsPlaced % 2 === 0 && ticTacToeArr[i][j] === undefined) {
+                            ticTacToeBox[i][j].innerHTML = "O";
+                            ticTacToeArr[i][j] = 0;
+                        } else if (ticTacToeArr[i][j] === undefined){
+                            ticTacToeBox[i][j].innerHTML = "X";
+                            ticTacToeArr[i][j] = 1;
+                        }
+
+                        endGame();
+                        positionsPlaced++;
+                    }
+                    ticTacToeBox[i][j].addEventListener("click", addPosition);
+
+                    let endTheGame = function() {
+                        if (gameOver == true) {
+                            for (let i = 0; i < 3; i++) {
+                                for (let j = 0; j < 3; j++) {
+                                    ticTacToeBox[i][j].removeEventListener("click", addPosition);
+                                }
+                            }
+                        }
+                    }
+                    ticTacToeTable.addEventListener("click", endTheGame);
+                }
+            }
+
+
+        </script>
+    </body>
+</html>
